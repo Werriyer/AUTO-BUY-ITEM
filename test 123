@@ -1,0 +1,204 @@
+-- รอให้เกมโหลดเสร็จ
+repeat
+    wait(0.1)
+until game:IsLoaded()  -- รอจนกว่าเกมจะโหลดเสร็จ
+
+wait(5)
+
+-- ตรวจสอบ GameId และรันเฉพาะเมื่อ GameId ตรงกับ 7074860883
+if game.GameId == 7074860883 then
+    -- โหลด WindUI UI
+    local WindUI = loadstring(game:HttpGet("https://tree-hub.vercel.app/api/UI/WindUI"))()
+
+    local Window = WindUI:CreateWindow({
+        Title = "WERRIYER",
+        Icon = "door-open",
+        Author = "Example UI",
+        Folder = "CloudHub",
+        Size = UDim2.fromOffset(580, 460),
+        Transparent = true,
+        Theme = "Dark",
+        SideBarWidth = 200,
+        --Background = "rbxassetid://13511292247", -- rbxassetid only
+        HasOutline = false,
+        -- remove it below if you don't want to use the key system in your script.
+    })
+    Window:EditOpenButton({
+        Title = "test version",
+        Icon = "monitor",
+        CornerRadius = UDim.new(0,10),
+        StrokeThickness = 2,
+        Color = ColorSequence.new( -- gradient
+            Color3.fromHex("FF0F7B"), 
+            Color3.fromHex("F89B29")
+        ),
+        --Enabled = false,
+        Draggable = true,
+    })
+
+    local Tabs = {
+        ButtonTab = Window:Tab({ Title = "Button", Icon = "mouse-pointer-2", Desc = "Contains interactive buttons for various actions." }),
+        CodeTab = Window:Tab({ Title = "Code", Icon = "code", Desc = "Displays and manages code snippets." }),
+    }
+
+    Window:SelectTab(1)
+
+    -- เพิ่มปุ่มและการกระทำที่เกี่ยวข้อง
+    
+Tabs.ButtonTab:Button({
+    Title = "USE DROP POTION",
+    Desc = "",
+    Callback = function() local args = {
+    [1] = {
+        [1] = {
+            ["Action"] = "Use",
+            ["Event"] = "UseItem",
+            ["Name"] = "DropsPotion"
+        },
+        [2] = "\n"
+    }
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("BridgeNet2"):WaitForChild("dataRemoteEvent"):FireServer(unpack(args)) end
+})
+
+
+
+
+
+
+
+
+
+
+
+    Tabs.ButtonTab:Button({
+    Title = "drop potion",
+    Desc = "buy drop potion",
+    Callback = function() local args = {
+    [1] = {
+        [1] = {
+            ["Name"] = "DropsBoost",
+            ["Type"] = "Product",
+            ["SubType"] = "Products",
+            ["Event"] = "TicketShop"
+        },
+        [2] = "\n"
+    }
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("BridgeNet2"):WaitForChild("dataRemoteEvent"):FireServer(unpack(args))
+ end
+})
+
+
+
+
+
+
+
+
+
+
+
+
+    Tabs.ButtonTab:Button({
+        Title = "TICKET UPG DG",
+        Desc = "Use ticket to buy",
+        Callback = function()  
+            local args = {
+                [1] = {
+                    [1] = {
+                        ["Action"] = "Buy",
+                        ["Shop"] = "RuneShop",
+                        ["Item"] = "DgURankUpRune",
+                        ["Event"] = "ItemShopAction"
+                    },
+                    [2] = "\n"
+                }
+            }
+
+            game:GetService("ReplicatedStorage"):WaitForChild("BridgeNet2"):WaitForChild("dataRemoteEvent"):FireServer(unpack(args))
+        end,
+    })
+
+    Tabs.ButtonTab:Button({
+        Title = "RUNE UPG DG",
+        Desc = "Use rune to buy",
+        Callback = function()  
+            local args = {
+                [1] = {
+                    [1] = {
+                        ["Action"] = "Buy",
+                        ["Shop"] = "ExchangeShop",
+                        ["Item"] = "DgURankUpRune",
+                        ["Event"] = "ItemShopAction"
+                    },
+                    [2] = "\n"
+                }
+            }
+
+            game:GetService("ReplicatedStorage"):WaitForChild("BridgeNet2"):WaitForChild("dataRemoteEvent"):FireServer(unpack(args))
+        end,
+    })
+
+    -- ตัวเลือก Auto buy rare Dust
+    Tabs.ButtonTab:Toggle({
+        Title = "Auto buy rare Dust",
+        Desc = "Common > Rare",
+        Default = false,
+        Callback = function(state)
+            autoraredust = state
+            if autoraredust then
+                task.spawn(function()
+                    while autoraredust do
+                        local args = {
+                            [1] = {
+                                [1] = {
+                                    ["Action"] = "Buy",
+                                    ["Shop"] = "ExchangeShop",
+                                    ["Item"] = "EnchRare",
+                                    ["Event"] = "ItemShopAction"
+                                },
+                                [2] = "\n"
+                            }
+                        }
+                        game:GetService("ReplicatedStorage"):WaitForChild("BridgeNet2"):WaitForChild("dataRemoteEvent"):FireServer(unpack(args))
+                        task.wait(0.1)
+                    end
+                end)
+            end
+        end
+    })
+
+    -- ตัวเลือก Auto buy LEG Dust
+    Tabs.ButtonTab:Toggle({
+        Title = "Auto buy LEG DUST",
+        Desc = "RARE > LEG",
+        Default = false,
+        Callback = function(state)
+            autoleg = state
+            if autoleg then
+                task.spawn(function()
+                    while autoleg do
+                        local args = {
+                            [1] = {
+                                [1] = {
+                                    ["Action"] = "Buy",
+                                    ["Shop"] = "ExchangeShop",
+                                    ["Item"] = "EnchLegendary",
+                                    ["Event"] = "ItemShopAction"
+                                },
+                                [2] = "\n"
+                            }
+                        }
+                        game:GetService("ReplicatedStorage"):WaitForChild("BridgeNet2"):WaitForChild("dataRemoteEvent"):FireServer(unpack(args))
+                        task.wait(0.1)
+                    end
+                end)
+            end
+        end
+    })
+else
+    print("This script is only for GameId 7074860883.")
+end
